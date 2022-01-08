@@ -96,8 +96,8 @@ if(role === "logged"){
     <div className="border border-2 mt-3 d-flex">
     
     {/* <div className="border border-2 w-25 float-start" onClick={console.log("test111")}> godzina 1</div> */}
-    <button id="godzina1" className="float-start w-25 btn btn-primary" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina1</button>
-    <button id="godzina2" className="w-25 m-auto btn btn-primary" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina 2</button>
+    <button id="godzina1" className="float-start w-25 btn btn-success" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina1</button>
+    <button id="godzina2" className="w-25 m-auto btn btn-danger" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina 2</button>
     <button id="godzina3" className="w-25 float-end btn btn-secondary" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina 3</button>
     {/* <div className="border border-2 w-25 m-auto" onClick={() => {}}> godzina 2</div>
     <div className="border border-2 w-25 float-end"> godzina 3</div> */}

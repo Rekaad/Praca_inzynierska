@@ -46,7 +46,7 @@ function MainNavigation () {
       <li className="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         {username}
       </li>
-      <ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+      <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
         <li><Link className="dropdown-item" to="/profil">Profil</Link></li>
         <li><Link className="dropdown-item" to="/friends">Znajomi</Link></li>
         <li><button className="dropdown-item" onClick={logout}>Wyloguj</button></li>

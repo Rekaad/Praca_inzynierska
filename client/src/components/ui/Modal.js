@@ -74,6 +74,48 @@ return (
   </div>
 </div>
 
+<div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalchange" tabIndex="-1" aria-labelledby="modalchangeLabel" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="modalchangeLabel">Okno zmiany hasła</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body m-auto">
+      <form autoComplete="off">
+      <div className="col">
+        <div className="row">        <div className="text-center" >Wpisz aktualne hasło </div></div>
+        <div className="row">        <input type="password"/></div>
+        <div className="row">    <div className="text-center" >Wpisz nowe hasło </div> </div>
+        <div className="row">       <input type="text"/></div>
+        <div className="row">         <div className="text-center" >Powtórz nowe hasło </div></div>
+        <div className="row">    <input type="text"/></div>
+
+      </div>
+      </form>
+      {/* <div className="row">
+        <div className="col">     Wpisz nowe hasło:</div>
+        <div className="col">       <input type="text"/></div>
+
+      </div>
+      <div className="row">
+        <div className="col">        Powtórz nowe hasło: </div>
+        <div className="col">    <input type="text"/></div>
+
+      </div> */}
+
+      </div>
+      <div className="modal-footer ">
+      <div className="w-100">
+      <button type="button" className="btn btn-dark float-start mr-auto">Zapisz zmiany</button>
+        <button type="button"  className="border border 1 btn btn-light float-end" data-bs-dismiss="modal">Anuluj</button>
+      </div>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 );
 

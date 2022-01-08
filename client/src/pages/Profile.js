@@ -1,31 +1,62 @@
+import Modal from "../components/ui/Modal";
+
+
 function Profile(){
 
 return <div className="w-75 mx-auto">
 
+ <div className="card mb-4 w-75 mx-auto text-center mt-4 border border-5">
+<section className="section about-section gray-bg" id="about">
+            <div className="container">
+                <div className="row align-items-center">
+                <div className="col px-md-0 ">
+                        <div className="">
+                            <img className="w-75 float-start" src="http://studio-kreacji.pl/wp-content/uploads/2016/10/blank-avatar.png" title="" alt=""/>
+                        </div>
+                    </div>
+                    <div className="col-lg-6">
+                        <div className="about-text go-to">
+                            <h3 className="dark-color">Opis profilu</h3>
+                            <p>I design and develop services for customers of all sizes, specializing in creating stylish, modern websites, web services and online stores. My passion is to design digital user experiences through the bold interface and meaningful interactions.</p>
+                            <div className="row about-list mt-5">
+                                <div className="col-lg-6">
 
-<div className="card mb-4 w-100 mx-auto text-center mt-4 border border-5">
+                                    <div className="media">
+                                        <label className="fw-bold">Wiek</label>
+                                        <p>22 Yr</p>
+                                    </div>
 
-{/*  <div>
-    <img className="card-img-top" src={props.image} alt={props.title} />
-</div> */}
-<div className="card-body w-100">
-<div className="mb-4">
-<h1>Twój profil</h1>
-</div>
-  
-  <div className="text-start float-start mt-4">
-  <h3>Imie: </h3>
-  <h3>Nazwisko: </h3>
-  <h3>Opis: </h3>
-  </div>
-  <div className="float-end w-25">
-       <img className="img-fluid" src="http://studio-kreacji.pl/wp-content/uploads/2016/10/blank-avatar.png" /> 
-
-  </div>
- 
+                                   
+                                    
+                                </div>
+                                <div className="col-md-6">
 
 
-</div>
+
+                                <div className="media">
+                                        <label className="fw-bold">Numer telefonu</label>
+                                        <p>111 222 333</p>
+                                    </div>
+                                  
+
+                                </div>
+                                <div className="media">
+                                    <div className="count-data text-center">
+
+                                    <button type="button" className="btn btn-dark btn-lg" data-bs-toggle="modal" data-bs-target="#modalchange">Zmień hasło</button>
+                                    </div>
+                                  <Modal dane={"haslo"}/>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </section>
+        
 </div>
 
 </div>
