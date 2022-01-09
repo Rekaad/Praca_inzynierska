@@ -1,14 +1,28 @@
 import mainpage from "../img/mainpage.png";
 import { useState, useEffect } from "react";
-
+import  Axios  from "axios";
 function MainPage() {
   const [role, setRole] = useState("");
   const [username, setUsername] = useState("");
 
+  Axios.defaults.withCredentials = true;
+    
   useEffect(() => {
-    setRole("logged");
-    setUsername("User1");
-  }, []);
+      Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+          if(response.data.loggedIn === true){
+              setRole("logged");
+              setUsername(response.data.user[0].name);
+              console.log(response);
+          }else{
+              setRole("visitor");
+          }
+          
+        });
+          
+          
+    
+
+    }, []);
 
   if (role === "logged") {
     return (
@@ -16,9 +30,9 @@ function MainPage() {
         <div className="float-start w-40 mt-5 ms-5 border border-3 border-dark rounded">
           <div className="card-body">
             <div className="float-start w-75 mt-3">
-              <h1> Orlik Lublin - </h1>
+              <h1> Orlik Lublin </h1>
               <div className="ms-2 mb-5">
-                <h4 className="text-secondary"> Zalogowany jako: </h4>
+                <h4 className="text-secondary"> Zalogowany jako: {username}</h4>
               </div>
             </div>
           </div>

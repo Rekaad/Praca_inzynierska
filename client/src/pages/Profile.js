@@ -1,7 +1,33 @@
 import Modal from "../components/ui/Modal";
-
+import {useState, useEffect} from "react";
+import Axios from "axios";
 
 function Profile(){
+
+    //const [role, setRole] = useState("");
+    const [username, setUsername] = useState("");
+    const [phone, setPhone] = useState("");
+
+
+    Axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+            if(response.data.loggedIn === true){
+                //setRole("logged");
+                setUsername(response.data.user[0].name);
+                setPhone(response.data.user[0].phone);
+                console.log(response);
+            }else{
+               // setRole("visitor");
+            }
+            
+          });
+            
+            
+      
+
+      }, []);
 
 return <div className="w-75 mx-auto">
 
@@ -35,7 +61,7 @@ return <div className="w-75 mx-auto">
 
                                 <div className="media">
                                         <label className="fw-bold">Numer telefonu</label>
-                                        <p>111 222 333</p>
+                                        <p>{phone}</p>
                                     </div>
                                   
 

@@ -16,14 +16,14 @@ return <div className=" w-75 h-25 mx-auto">
           pathname: "/orlikinfo",
           state: dataId // your data array of objects
             }}>
-    <div className="card rounded-pill mb-4 w-100 mx-auto text-center">
+    <div className="border border-3 mb-3 w-100 mx-auto text-center">
 
    {/*  <div>
         <img className="card-img-top" src={props.image} alt={props.title} />
     </div> */}
     <div className="card-body">
-        <h3>{props.address}</h3>
-        <p>{props.description}</p>
+        <h3>{props.adress}</h3>
+        <p>{props.school}</p>
 
     </div>
 </div>

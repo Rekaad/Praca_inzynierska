@@ -1,67 +1,113 @@
+import React, {useEffect, useState} from 'react';
+import Axios from 'axios';
 import {Link} from 'react-router-dom';
 
 function Register(){
 
+const [nameReg, setnameReg] = useState('');
+const [surnameReg, setSurnameReg] = useState('');
+const [emailReg, setEmailReg] = useState('');
+const [passwordReg, setPasswordReg] = useState('');
+const [password2Reg, setPassword2Reg] = useState('');
+const [phoneReg, setPhoneReg] = useState('');
+
+
+const [registerStatus, setRegisterStatus] = useState('');
+
+Axios.defaults.withCredentials = true;
+
+const register = () => {
+  if(passwordReg.length>=8 && passwordReg === password2Reg){
+    console.log(nameReg, surnameReg, emailReg, passwordReg,phoneReg);
+    Axios.post("http://localhost:3001/rejestracja",{
+      name: nameReg,
+      surname:surnameReg,
+      password: passwordReg,
+      email: emailReg,
+      phone: phoneReg,
+    }).then((response) => {
+      if(response.data.message){
+        console.log(response);
+        setRegisterStatus(response.data.message); 
+      }else{
+        console.log(response);
+        window.location.reload(false);
+        window.location = "/login";
+      }
+    });
+  }else{
+    console.log("zle powtorzone haslo");
+  }
+  
+};
 
     return <div>
 
-<section className="vh-100">
-  <div className="mask d-flex align-items-center h-100">
-    <div className="container py-5 h-100">
-      <div className="row d-flex justify-content-center align-items-center h-100">
-        <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div className="card bg-dark text-white">
-            <div className="card-body p-5 text-center">
-              <h2 className="text-uppercase text-center mb-5">Create an account</h2>
+<section className="">
 
-              <form>
+    <div className="container py-2">
+      <div className="row d-flex justify-content-center align-items-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card p-5 text-center">
 
-                <div className="form-outline mb-3">
-                  <input type="text" id="form3Example1cg" className="form-control form-control-lg" />
-                  <label className="form-label" htmlFor="form3Example1cg">Your Name</label>
+              <h2 className="text-uppercase text-center mb-3">Stwórz konto</h2>
+
+             
+
+                <div className="form-outline mb-2">
+                  <input type="text" id="form3Example1cg" required className="form-control form-control-lg" onChange={(e) =>{
+                    setnameReg(e.target.value);
+                 }} />
+                  <label className="form-label" htmlFor="form3Example1cg">Imie</label>
                 </div>
 
-                <div className="form-outline mb-3">
-                  <input type="email" id="form3Example3cg" className="form-control form-control-lg" />
-                  <label className="form-label" htmlFor="form3Example3cg">Your Email</label>
+                <div className="form-outline mb-2">
+                  <input type="text" id="form3Example2cg" required className="form-control form-control-lg" onChange={(e) =>{
+                    setSurnameReg(e.target.value);
+                 }} />
+                  <label className="form-label" htmlFor="form3Example2cg">Nazwisko</label>
                 </div>
 
-                <div className="form-outline mb-3">
-                  <input type="password" id="form3Example4cg" className="form-control form-control-lg" />
-                  <label className="form-label" htmlFor="form3Example4cg">Password</label>
+                <div className="form-outline mb-2">
+                  <input type="text" id="form3Example3cg" required className="form-control form-control-lg" onChange={(e) =>{
+                    setEmailReg(e.target.value);
+                 }}/>
+                  <label className="form-label" htmlFor="form3Example3cg">Email</label>
                 </div>
 
-                <div className="form-outline mb-3">
-                  <input type="password" id="form3Example4cdg" className="form-control form-control-lg" />
-                  <label className="form-label" htmlFor="form3Example4cdg">Repeat your password</label>
+                <div className="form-outline mb-2">
+                  <input type="password" id="form3Example4cg" minLength={8} className="form-control form-control-lg" onChange={(e) =>{
+                    setPasswordReg(e.target.value);
+                 }} />
+                  <label className="form-label" htmlFor="form3Example4cg">Hasło</label>
                 </div>
 
-                <div className="form-check d-flex justify-content-center mb-5">
-                  <input
-                    className="form-check-input me-2"
-                    type="checkbox"
-                    value=""
-                    id="form2Example3cg"
-                  />
-                   <label className="form-check-label" for="form2Example3g">
-                    I agree all statements in <a href="#!" className="text-white"><u>Terms of service</u></a>
-                  </label> 
+                <div className="form-outline mb-2">
+                  <input type="password" id="form3Example5cdg" required className="form-control form-control-lg" onChange={(e) =>{
+                    setPassword2Reg(e.target.value);
+                 }}/>
+                  <label className="form-label" htmlFor="form3Example5cdg">Powtórz hasło</label>
                 </div>
 
+                <div className="form-outline mb-2">
+                  <input type="text" id="form3Example6cdg" maxLength={9} className="form-control form-control-lg" onChange={(e) =>{
+                    setPhoneReg(e.target.value);
+                 }}/>
+                  <label className="form-label" htmlFor="form3Example6cdg">Numer telefonu</label>
+                </div>
                 <div className="d-flex justify-content-center">
-                  <button type="button" className="btn btn-outline-light btn-lg px-5">Register</button>
+                  <button type="button" className="btn btn-outline-dark btn-lg px-5" onClick={register}>Register</button>
                 </div>
 
-                <p className="mt-5 mb-0">Have already an account? <Link className="text-white-50 fw-bold" to='/login'> Zaloguj się </Link></p>
+                <p className="mt-3 mb-0">Posiadasz już konto? <Link className=" fw-bold" to='/login'> Zaloguj się </Link></p>
 
-              </form>
 
-            </div>
+              <h1>{registerStatus}</h1>
           </div>
         </div>
       </div>
     </div>
-  </div>
+
 </section>
     </div>
 

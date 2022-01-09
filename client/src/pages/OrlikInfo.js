@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
 import Modal from "../components/ui/Modal";
 import { Link } from "react-router-dom";
-
+import Axios from "axios";
 function OrlikInfo(props){
 
     const [role, setRole] = useState("");
@@ -33,16 +33,24 @@ function OrlikInfo(props){
     };
 
     function handleData(){
-        setThisData([dataId.address,dataId.title,day,thisHour]);
+        setThisData([dataId.adress,dataId.school,day,thisHour]);
     };
-
+    Axios.defaults.withCredentials = true;
     useEffect(() =>{
-        setRole("logged");
+        Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+            if(response.data.loggedIn === true){
+                setRole("logged");
+                console.log(response);
+            }else{
+                setRole("visitor");
+            }
+            
+          });
         console.log(dataId);
         
       },[]);
 
-      
+    const modaldata = [dataId.pl_terms,thisData];
 
 if(role === "logged"){
 
@@ -56,13 +64,13 @@ if(role === "logged"){
     </div> */}
     <div className="card-body w-100">
     <div className="mb-4">
-    <h1>{dataId.address}</h1>
+    <h1>{dataId.adress}</h1>
     </div>
       <div className="d-flex">
       <div className="border border-3 float-start w-25">
       <h3> Kontakt</h3>
-      <h5>Nr telefonu: </h5>
-      <h5>E-mail: </h5>
+      <h5>Nr telefonu: <br/> {dataId.number}</h5>
+      <h5>E-mail: <br/> {dataId.email}</h5>
       </div>
     
       <div className="border border-3 m-auto w-25">
@@ -71,9 +79,9 @@ if(role === "logged"){
       <h5>Nd: </h5>
       </div>
     
-      <div className="border border-3 float-end w-25">
-      <h3> Regulamin</h3>
-    
+      <div className="d-flex border border-3 float-end w-25" data-bs-toggle="modal" data-bs-target="#modalregu">
+      <h3 className=" m-auto" > Regulamin </h3>
+        
       </div>
      
     </div>
@@ -101,7 +109,7 @@ if(role === "logged"){
     <button id="godzina3" className="w-25 float-end btn btn-secondary" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina 3</button>
     {/* <div className="border border-2 w-25 m-auto" onClick={() => {}}> godzina 2</div>
     <div className="border border-2 w-25 float-end"> godzina 3</div> */}
-    <Modal dane={thisData}/>
+    <Modal dane={modaldata}/>
     
     
     </div>

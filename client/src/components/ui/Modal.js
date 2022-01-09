@@ -1,4 +1,59 @@
+import {useState, useEffect} from "react";
+import Axios from "axios";
+
 function Modal(props) {
+
+const [email, setEmail] = useState("");
+const [akualnehaslozap, setAktualnehaslozap] = useState("")
+const [aktualnehaslo, setAktualneHaslo] = useState("");
+const [nowehaslo, setNoweHaslo] = useState("");
+const [nowehaslo2, setNoweHaslo2] = useState("");
+const [loginStatus, setLoginStatus] = useState('');
+
+Axios.defaults.withCredentials = true;
+    
+useEffect(() => {
+    Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+        if(response.data.loggedIn === true){
+            //setRole("logged");
+            setAktualnehaslozap(response.data.user[0].password);
+            setEmail(response.data.user[0].email);
+            console.log(response);
+        }else{
+           // setRole("visitor");
+        }
+        
+      });
+        
+        
+  
+
+  }, []);
+
+const zmianaHasla = () =>{
+
+if(nowehaslo === nowehaslo2){
+  Axios.post("http://localhost:3001/zmianahasla", {
+  email: email,
+  password: nowehaslo,
+  }).then((response) => {
+    if(response.data.message){
+     setLoginStatus(response.data.message);
+      
+      console.log(response);
+  }else{
+      console.log(response);
+      
+      //window.location.reload(false);
+      //window.location = "/";
+  }
+});
+}else{
+  console.log(akualnehaslozap);
+  console.log("test");
+}
+
+}
 
 function cancelHandler(){
 props.onCancel();
@@ -13,19 +68,22 @@ return (
 
 <div>
 <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog">
+  <div className="modal-dialog modal-dialog-centered">
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">Okno rezerwacji</h5>
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">
-        {props.dane} <br/>
-        {props.dane[3]}
+        {console.log(props.dane)}
+        {props.dane[1][0]} <br/>
+        {props.dane[1][1]} <br/>
+        {props.dane[1][2]} <br/>
+        {props.dane[1][3]} <br/>
       </div>
       <div className="modal-footer">
-      <button type="button" className="btn btn-primary">Save changes</button>
-        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="button" className="btn btn-dark">Zarezerwuj</button>
+        <button type="button" className="btn btn-light" data-bs-dismiss="modal">Anuluj</button>
       </div>
     </div>
   </div>
@@ -85,32 +143,49 @@ return (
       <form autoComplete="off">
       <div className="col">
         <div className="row">        <div className="text-center" >Wpisz aktualne hasło </div></div>
-        <div className="row">        <input type="password"/></div>
+        <div className="row">        <input type="password" onChange={(e) =>{
+                    setAktualneHaslo(e.target.value);
+                 }}/></div>
         <div className="row">    <div className="text-center" >Wpisz nowe hasło </div> </div>
-        <div className="row">       <input type="text"/></div>
+        <div className="row">       <input type="text" onChange={(e) =>{
+                    setNoweHaslo(e.target.value);
+                 }}/></div>
         <div className="row">         <div className="text-center" >Powtórz nowe hasło </div></div>
-        <div className="row">    <input type="text"/></div>
+        <div className="row">    <input type="text" onChange={(e) =>{
+                    setNoweHaslo2(e.target.value);
+                 }}/></div>
 
       </div>
       </form>
-      {/* <div className="row">
-        <div className="col">     Wpisz nowe hasło:</div>
-        <div className="col">       <input type="text"/></div>
 
-      </div>
-      <div className="row">
-        <div className="col">        Powtórz nowe hasło: </div>
-        <div className="col">    <input type="text"/></div>
-
-      </div> */}
 
       </div>
       <div className="modal-footer ">
       <div className="w-100">
-      <button type="button" className="btn btn-dark float-start mr-auto">Zapisz zmiany</button>
+      <button type="button" className="btn btn-dark float-start mr-auto" onClick={zmianaHasla}>Zapisz zmiany</button>
         <button type="button"  className="border border 1 btn btn-light float-end" data-bs-dismiss="modal">Anuluj</button>
       </div>
       
+      </div>
+    </div>
+  </div>
+</div>
+
+<div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modalregu" tabIndex="-1" aria-labelledby="modalreguLabel" aria-hidden="true">
+  <div className="modal-dialog modal-dialog-centered">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="modalreguLabel">Regulamin</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body text-center">
+         {props.dane[0]}<br/>
+
+      </div>
+      <div className="modal-footer ">
+      <div className="w-100">
+        <button type="button" className="border border 1 btn btn-light float-end" data-bs-dismiss="modal">Anuluj</button>
+      </div>
       </div>
     </div>
   </div>

@@ -1,27 +1,38 @@
 import {Link} from 'react-router-dom';
 import {useState, useEffect} from "react";
+import Axios from "axios";
 
 function MainNavigation () {
 
     const [role, setRole] = useState("");
     const [username, setUsername] = useState("");
+
+    Axios.defaults.withCredentials = true;
     
     useEffect(() => {
-
-            setRole("logged");
-            setUsername("User1");
+        Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+            if(response.data.loggedIn === true){
+                setRole("logged");
+                setUsername(response.data.user[0].name);
+                console.log(response);
+            }else{
+                setRole("visitor");
+            }
+            
+          });
+            
+            
       
 
       }, []);
 
     const logout = async() => {
 
-        //tutaj zapytanie wylogowania??
-        console.log("test1");
-        console.log("Wylogowano "+ username);
-        setRole("visitor");
-        //window.location.reload(false);
-        //window.location = "/";
+        Axios.get("http://localhost:3001/wylogowanie").then((response) => {
+            console.log(response);
+            window.location.reload(false);
+            window.location = "/";
+        });
 
     }
 

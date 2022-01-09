@@ -14,18 +14,19 @@ return(
     {props.orliki.filter((val)=> {
         if(searchTerm===""){
             return val;
-        }else if(val.address.toLowerCase().includes(searchTerm.toLowerCase())){
+        }else if(val.adress.toLowerCase().includes(searchTerm.toLowerCase())){
             return val;
         }
     }).map((orlik) => (
         <OrlikiItem 
-            key={orlik.id} 
-            id={orlik.id}
-            title={orlik.title}
-            image={orlik.image} 
-            address={orlik.address} 
-            description={orlik.description}
-            linkHandle={orlik.linkHandle}
+            key={orlik.orlik_id} 
+            id={orlik.orlik_id}
+            school={orlik.school} 
+            adress={orlik.adress} 
+            number={orlik.number}
+            email={orlik.email}
+            en_terms={orlik.en_terms}
+            pl_terms={orlik.pl_terms}
         />))}
 </li>
 </div>
