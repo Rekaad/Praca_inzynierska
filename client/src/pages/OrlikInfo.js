@@ -1,9 +1,296 @@
 import { useState,useEffect } from "react";
 import { useHistory } from "react-router";
 import { useLocation } from "react-router-dom";
-import Modal from "../components/ui/Modal";
+// import Modal from "../components/ui/Modal";
+import Modal from 'react-modal'
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import ReservationInnerItemList from "../components/reservation/ReservationInnerItemList";
+
+
+const DUMMY_DATA = [
+    {
+        reservation_id: '1',
+        orlik_id: '1',
+        day: 'Poniedziałek',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"1",
+    },
+    {
+        reservation_id: '2',
+        orlik_id: '1',
+        day: 'Poniedziałek',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"2",
+    },
+    {
+        reservation_id: '3',
+        orlik_id: '1',
+        day: 'Poniedziałek',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '4',
+        orlik_id: '1',
+        day: 'Poniedziałek',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '5',
+        orlik_id: '1',
+        day: 'Poniedziałek',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+    {
+        reservation_id: '6',
+        orlik_id: '1',
+        day: 'Wtorek',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"",
+    },
+    {
+        reservation_id: '7',
+        orlik_id: '1',
+        day: 'Wtorek',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"6",
+    },
+    {
+        reservation_id: '8',
+        orlik_id: '1',
+        day: 'Wtorek',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '9',
+        orlik_id: '1',
+        day: 'Wtorek',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '10',
+        orlik_id: '1',
+        day: 'Wtorek',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+    {
+        reservation_id: '11',
+        orlik_id: '1',
+        day: 'Środa',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"",
+    },
+    {
+        reservation_id: '12',
+        orlik_id: '1',
+        day: 'Środa',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"",
+    },
+    {
+        reservation_id: '13',
+        orlik_id: '1',
+        day: 'Środa',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '14',
+        orlik_id: '1',
+        day: 'Środa',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '15',
+        orlik_id: '1',
+        day: 'Środa',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+    {
+        reservation_id: '16',
+        orlik_id: '1',
+        day: 'Czwartek',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"",
+    },
+    {
+        reservation_id: '17',
+        orlik_id: '1',
+        day: 'Czwartek',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"",
+    },
+    {
+        reservation_id: '18',
+        orlik_id: '1',
+        day: 'Czwartek',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '19',
+        orlik_id: '1',
+        day: 'Czwartek',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '20',
+        orlik_id: '1',
+        day: 'Czwartek',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+    {
+        reservation_id: '21',
+        orlik_id: '1',
+        day: 'Piątek',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"",
+    },
+    {
+        reservation_id: '22',
+        orlik_id: '1',
+        day: 'Piątek',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"",
+    },
+    {
+        reservation_id: '23',
+        orlik_id: '1',
+        day: 'Piątek',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '24',
+        orlik_id: '1',
+        day: 'Piątek',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '25',
+        orlik_id: '1',
+        day: 'Piątek',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+    {
+        reservation_id: '26',
+        orlik_id: '1',
+        day: 'Sobota',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"",
+    },
+    {
+        reservation_id: '27',
+        orlik_id: '1',
+        day: 'Sobota',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"",
+    },
+    {
+        reservation_id: '28',
+        orlik_id: '1',
+        day: 'Sobota',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '29',
+        orlik_id: '1',
+        day: 'Sobota',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '30',
+        orlik_id: '1',
+        day: 'Sobota',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+    {
+        reservation_id: '31',
+        orlik_id: '1',
+        day: 'Niedziela',
+        start_hour:'16',
+        end_hour: '17',
+        user_id:"",
+    },
+    {
+        reservation_id: '32',
+        orlik_id: '1',
+        day: 'Niedziela',
+        start_hour:'17',
+        end_hour: '18',
+        user_id:"",
+    },
+    {
+        reservation_id: '33',
+        orlik_id: '1',
+        day: 'Niedziela',
+        start_hour:'18',
+        end_hour: '19',
+        user_id:"",
+    },
+    {
+        reservation_id: '34',
+        orlik_id: '1',
+        day: 'Niedziela',
+        start_hour:'19',
+        end_hour: '20',
+        user_id:"",
+    },
+    {
+        reservation_id: '35',
+        orlik_id: '1',
+        day: 'Niedziela',
+        start_hour:'20',
+        end_hour: '21',
+        user_id:"",
+    },
+];
+
 function OrlikInfo(props){
 
     const [role, setRole] = useState("");
@@ -11,30 +298,12 @@ function OrlikInfo(props){
     const [day, setDay] = useState("Poniedziałek");
     const [thisHour, setThisHour] = useState("0");
     const [thisData, setThisData] = useState([]);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const history = useHistory();
     const location = useLocation();
     const dataId = location.state;
 
-    const handleDays = async e => {
-        if(e === "1") setDay("Poniedziałek");
-        else if(e === "2") setDay("Wtorek");
-        else if(e === "3") setDay("Środa");
-        if(e === "4") setDay("Czwartek");
-        if(e === "5") setDay("Piątek");
-        if(e === "6") setDay("Sobota");
-        if(e === "7") setDay("Niedziela");
-        console.log(e,day);
-         };
-    
-    const handleHour = async e => {
-        setThisHour(e);
-        console.log(thisData);
-    };
-
-    function handleData(){
-        setThisData([dataId.adress,dataId.school,day,thisHour]);
-    };
     Axios.defaults.withCredentials = true;
     useEffect(() =>{
         Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
@@ -50,14 +319,29 @@ function OrlikInfo(props){
         
       },[]);
 
-    const modaldata = [dataId.pl_terms,thisData];
+      Axios.defaults.withCredentials = true;
+
+      const [dane, setDane] = useState([]);
+      
+  
+      useEffect(() => {
+          const getRezerwacje = () => {
+
+              Axios.get(`http://localhost:3001/rezerwacjeorlik/${dataId.id}`).then((response) => {
+              console.log(response.data);
+              setDane(response.data);
+          });
+      
+          }
+          getRezerwacje();
+        }, []);
 
 if(role === "logged"){
 
     return <div className="w-75 mx-auto">
 
 
-    <div className="card mb-4 w-100 mx-auto text-center mt-4 border border-5">
+    <div className="card mb-4 w-100 mx-auto text-center mt-2 border border-5">
     
     {/*  <div>
         <img className="card-img-top" src={props.image} alt={props.title} />
@@ -79,37 +363,80 @@ if(role === "logged"){
       <h5>Nd: </h5>
       </div>
     
-      <div className="d-flex border border-3 float-end w-25" data-bs-toggle="modal" data-bs-target="#modalregu">
-      <h3 className=" m-auto" > Regulamin </h3>
-        
+      <div className="d-flex border border-3 float-end w-25">
+      <button className="m-auto w-100 h-100 bg-white border-0" onClick={() => {setModalIsOpen(true)}}> <h3> Regulamin</h3></button>
+    
+      <Modal isOpen={modalIsOpen} style={
+          {
+              overlay:
+              {
+                position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(80, 83, 90, 0.75)'
+              },
+              content:{
+                  width:"500px",
+                  height:"300px",
+                  position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: "translate(-50%, -50%)",
+      right: '40px',
+      bottom: '40px',
+      border: '1px solid #ccc',
+      background: '#fff',
+      overflow: 'auto',
+      WebkitOverflowScrolling: 'touch',
+      borderRadius: '4px',
+      outline: 'none',
+      padding: '0px',
+              }
+            }}> 
+
+            <div className="modal-dialog-scrollable"> 
+    <div className="modal-content">
+      <div className="modal-header">
+      <h3 className="modal-title">Regulamin</h3>
+      </div>
+    
+    <div className="modal-body" style={{height:"250px"}}>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+                 {dataId.pl_terms}<br/>
+    
+    </div>   
+    <div className="fixed-bottom mb-2 me-2">
+    <button type="button" className="border border 1 btn btn-light float-end" onClick={() => {setModalIsOpen(false); console.log(modalIsOpen)}}> Anuluj </button>
+    </div>
+       
+    </div>
+    </div>
+ 
+      </Modal>
       </div>
      
     </div>
     
-    <div className="border border-2 mt-4">
+    <div className="border border-2 mt-4" >
         <h3>Rezerwacje</h3>
-    </div>
-    
-    <div className="btn-group mt-3 m-auto">
-        <button id="1" onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Pon </button>
-        <button id="2" value={thisId} onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Wt</button>
-        <button id="3" value={thisId} onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Sr</button>
-        <button id="4" value={thisId} onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Czw</button>
-        <button id="5" value={thisId} onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Pt</button>
-        <button id="6" value={thisId} onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Sob</button>
-        <button id="7" value={thisId} onClick={e => {const wybrany = e.target.id; setThisId(wybrany);handleDays(wybrany);}}> Nd</button>
         
-    
     </div>
-    <div className="border border-2 mt-3 d-flex">
+
+    <div className="border border-2 mt-3">
     
-    {/* <div className="border border-2 w-25 float-start" onClick={console.log("test111")}> godzina 1</div> */}
-    <button id="godzina1" className="float-start w-25 btn btn-success" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina1</button>
-    <button id="godzina2" className="w-25 m-auto btn btn-danger" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina 2</button>
-    <button id="godzina3" className="w-25 float-end btn btn-secondary" onMouseOver={e=>{const godzina = e.target.id; handleHour(godzina);}} onClick={handleData} data-bs-toggle="modal" data-bs-target="#exampleModal">godzina 3</button>
+    <ReservationInnerItemList reservationinner={dane}/>
+   
     {/* <div className="border border-2 w-25 m-auto" onClick={() => {}}> godzina 2</div>
     <div className="border border-2 w-25 float-end"> godzina 3</div> */}
-    <Modal dane={modaldata}/>
+   
     
     
     </div>

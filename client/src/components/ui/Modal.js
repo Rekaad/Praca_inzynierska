@@ -76,10 +76,7 @@ return (
       </div>
       <div className="modal-body">
         {console.log(props.dane)}
-        {props.dane[1][0]} <br/>
-        {props.dane[1][1]} <br/>
-        {props.dane[1][2]} <br/>
-        {props.dane[1][3]} <br/>
+        {props.dane}
       </div>
       <div className="modal-footer">
       <button type="button" className="btn btn-dark">Zarezerwuj</button>
@@ -90,14 +87,14 @@ return (
 </div>
 
 <div className="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="modal2" tabIndex="-1" aria-labelledby="modal2Label" aria-hidden="true">
-  <div className="modal-dialog modal-dialog-centered">
+  <div className="modal-dialog modal-dialog-centered bg-dark">
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="modal2Label">Okno zapisu</h5>
         <button type="button" onClick={cancelHandler} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body text-center">
-      <h3>Czy na pewno chcesz się zapisać?</h3>
+      <h3>Czy na pewno chcesz się zapisać?</h3> <br/>
        Właściciel rezerwacji: {props.dane[0]} <br/>
        Adres orlika: {props.dane[1]} <br/>
        Tutaj chyba później będzie dzień: {props.dane[2]} <br/>
@@ -179,7 +176,8 @@ return (
         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body text-center">
-         {props.dane[0]}<br/>
+         {props.dane}<br/>
+         {console.log(props.dane)}
 
       </div>
       <div className="modal-footer ">

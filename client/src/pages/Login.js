@@ -31,8 +31,10 @@ function Login(){
   useEffect(() => {
   
     Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+      if (response.data.loggedIn == true) {
       setLoginStatus(response.data.user);
       console.log(response);
+      }
     });
 
   }, []);

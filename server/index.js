@@ -9,7 +9,7 @@ const session = require("express-session");
 
 app.use(cors({
 origin: ["http://localhost:3000"],
-methods: ["GET", "POST","DELETE","UPDATE"],
+methods: ["GET", "POST","DELETE","UPDATE","PUT"],
 credentials: true,
 }));
 app.use(express.json());
@@ -110,7 +110,9 @@ app.get("/rezerwacjeuser/:user_id",(req,res)=>{
 app.put("/rezerwacja/:reservation_id/:user_id", (req,res)=>{
     const resid = req.params.reservation_id;
     const id = req.params.user_id;
-
+    console.log("stop1");
+    console.log(req.params.user_id);
+    console.log("stop2");
     db.query("update reservation set user_id=? where user_id is null and reservation_id=?",
     [id,resid],(err,result)=>{
         console.log(result)
@@ -119,33 +121,56 @@ app.put("/rezerwacja/:reservation_id/:user_id", (req,res)=>{
             console.log(err);
         }
         res.send(result)
+        console.log(resid);
+        console.log(id);
+    })
+})
+
+//utworzenie meczu
+app.post("/mecze/:reservation_id",(req,res)=>{
+    const id = req.params.reservation_id;
+    db.query(`
+        insert into game
+        values (default,1,current_date(),?)
+    `,id,(err,result)=>{
+        if(err){
+            res.send("Błąd!")
+            console.log(err)
+        }
+        res.send(result);
     })
 })
 
 //wyswietlenie wszystkich meczy
 app.get("/mecze",(req,res)=>{
-    db.query("SELECT * FROM game g inner join reservation r on g.reservation_id=r.reservation_id;", 
+    db.query(`
+    SELECT u.name,u.surname,o.adress,o.school,o.phone,o.email,o.en_terms,o.pl_terms,
+           r.day,r.start_hour,r.end_hour
+    FROM game g 
+    inner join reservation r on g.reservation_id=r.reservation_id
+    inner join user u on u.user_id=r.user_id
+    inner join orlik o on o.orlik_id=r.orlik_id`, 
     (err,result, fields)=>{
         if(err){
             res.send("Błąd!")
+            console.log(err)
         }
         res.send(result);
     })
 });
 
 //zapisanie sie na gre
-app.put("/zapisanienagre/:user_id/:game_id/:reservation_id", (req,res)=>{
+app.put("/zapisanienagre/:user_id/:game_id/", (req,res)=>{
     const userid = req.params.user_id;
     const gameid = req.params.game_id;
-    const resid = req.params.reservation_id;
 
     db.query(`
-    update game set reservation_id=?,players=players+1,date=current_date() 
+    update game set players=players+1 
     where game_id=?;
     insert into players
     values (?,?)
     `,
-    [resid,gameid,userid,gameid],(err,result)=>{
+    [gameid,userid,gameid],(err,result)=>{
         if(err){
             console.log(err)
             res.send("Błąd");
@@ -156,17 +181,16 @@ app.put("/zapisanienagre/:user_id/:game_id/:reservation_id", (req,res)=>{
 })
 
 //wypisanie sie z gry
-app.delete("/wypisaniezgry/:user_id/:game_id/:reservation_id", (req,res)=>{
+app.delete("/wypisaniezgry/:user_id/:game_id", (req,res)=>{
     const userid = req.params.user_id;
     const gameid = req.params.game_id;
-    const resid = req.params.reservation_id;
 
     db.query(`
-    update game set reservation_id=?,players=players-1,date=current_date() 
+    update game set players=players-1
     where game_id=?;
     delete from players where user_id=? and game_id=?
     `,
-    [resid,gameid,userid,gameid],(err,result)=>{
+    [gameid,userid,gameid],(err,result)=>{
         if(err){
             console.log(err)
             res.send("Błąd");
@@ -218,7 +242,7 @@ app.post("/rejestracja", (req,res)=>{
     db.query(sqlRejestracja,[email, hash,name,surname,phone],(err,result)=>{
         if(err){
             console.log(err);
-            res.send({message:"Użytkownik błąd"});
+            res.send({message:"Użytkownik już istnieje"});
         }
 
         res.send(result);
@@ -226,11 +250,12 @@ app.post("/rejestracja", (req,res)=>{
    )
 })
 })
-
+//logowanie
 app.post('/login', (req,res)=>{
    
     const email =req.body.email;
     const password =req.body.password;
+    
     
      db.query(
          "SELECT * FROM user WHERE email =?",
@@ -262,7 +287,7 @@ app.post('/login', (req,res)=>{
         });
 
 
-
+//zmiana hasła
             
             
 app.post('/zmianahasla', (req,res)=>{
@@ -276,6 +301,8 @@ app.post('/zmianahasla', (req,res)=>{
       if (err) {
         console.log(err);
       }
+     bcrypt.compare(password, hash, (error, response) => {
+         if(response){
      db.query(
       "UPDATE user SET password =? WHERE email =?",[hash,email],
          (err,result)=> {
@@ -287,8 +314,13 @@ app.post('/zmianahasla', (req,res)=>{
             console.log(result);
           }
    }
-   );
-  });
+   )}
+        else{
+            res.send({message:"Wprowadzone hasło jest niepoprawne"})
+        }
+   ;}
+  );
+})
 });        
 
 //zmiana numeru telefonu
@@ -308,16 +340,17 @@ app.put("/zmiananumeru",(req,res)=>{
 })
     
 
-
+//sesja zalogowanego użytkownika
 app.get("/zalogowanie",(req,res)=>{
     if(req.session.user){
-        res.send({loggedIn: true, user: req.session.user})
+        res.send({loggedIn: true, user:req.session.user})
     }
     else {
-        res.send({loggedIn: false})
+        res.send({loggedIn:false})
     }
 });
 
+//wylogowanie użytkownika
 app.get("/wylogowanie",(req,res)=>{
     res.send({loggedIn: false});
     req.session.destroy();
@@ -366,3 +399,36 @@ app.get("/rezerwacja",(req,res)=>{
 app.listen(3001,() => {
     console.log("jestem na porcie 3001");
 });
+
+
+
+
+// //zmiana hasła
+            
+            
+// app.post('/zmianahasla', (req,res)=>{
+   
+//     const email = req.body.email;
+//     const password = req.body.password;
+
+//     console.log(req.body)
+//      bcrypt.hash(password, saltRounds, (err, hash) => {
+//         console.log(hash);
+//       if (err) {
+//         console.log(err);
+//       }
+//       bcrypt.compare(password, result[0].password, (error, response) => {
+//      db.query(
+//       "UPDATE user SET password =? WHERE email =?",[hash,email],
+//          (err,result)=> {
+//           if(err)
+//           {res.send(result);
+              
+//           }else{
+//             res.send({ message: "Hasło zostało zapisane!" });
+//             console.log(result);
+//           }
+//    }
+//    );
+//   });
+// });    
