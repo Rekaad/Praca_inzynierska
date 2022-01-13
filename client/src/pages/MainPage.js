@@ -2,24 +2,26 @@ import mainpage from "../img/mainpage.png";
 import { useState, useEffect } from "react";
 import  Axios  from "axios";
 function MainPage() {
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(localStorage.getItem("role"));
   const [username, setUsername] = useState("");
 
   Axios.defaults.withCredentials = true;
     
   useEffect(() => {
-      Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
-          if(response.data.loggedIn === true){
-              setRole("logged");
-              setUsername(response.data.user[0].name);
-              console.log(response);
-          }else{
-              setRole("visitor");
-          }
+     const checklogin = async () => {
+     await Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+        if(response.data.loggedIn === true){
+            setRole("logged");
+            setUsername(response.data.user[0].name);
+            console.log(response);
+        }else{
+            setRole("visitor");
+        }
+        
+      });
+     } 
           
-        });
-          
-          
+        checklogin();  
     
 
     }, []);
@@ -32,7 +34,7 @@ function MainPage() {
             <div className="float-start w-75 mt-3">
               <h1> Orlik Lublin </h1>
               <div className="ms-2 mb-5">
-                <h4 className="text-secondary"> Zalogowany jako: {username}</h4>
+                <h4 className="text-secondary"> Zalogowany jako: {localStorage.getItem('name')}</h4>
               </div>
             </div>
           </div>

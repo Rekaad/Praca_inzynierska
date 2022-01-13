@@ -41,7 +41,7 @@ const resetData = async e =>{
     console.log(thisData);
     setModalisOpen(true);
     //setThisData([name,adres,data,id]);
-    setThisData([props.imie,props.adres,props.data,props.id]);
+    setThisData([props.dzien,props.adres,props.orlikId,props.id]);
     console.log(thisData);
 };
 
@@ -65,35 +65,35 @@ const resetData = async e =>{
     <div className="card-body" >
     <div className="float-start w-75" >
     <h3>{props.adres}</h3>
-        <h4> {props.data}</h4>
-        <h4> {props.imie}</h4>
-        <h4> id {props.id}</h4>
+        <h4> {props.dzien}</h4>
+        <h4> {props.start}</h4>
+        <h4> id {props.end}</h4>
     </div>
 
 
     <div  className="float-end w-25 m-auto text-center">
 
 
-  <div className="row" onMouseEnter={closeModalHandler}>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
+  <div className="row" >
+    <div className="col-1" >&nbsp;</div>
+    <div className="col-1" >&nbsp;</div>
+    <div className="col-1" >&nbsp;</div>
     <div className="row" >
-    <div className="col-1" onMouseEnter={closeModalHandler}></div>
+    <div className="col-1" ></div>
     <div className="col-10">
-    <div className="w-100" onMouseOver={handleData} >
+    <div className="w-100" onMouseOver={ ()=> {handleData()}} >
         <button type="button" className="btn-lg btn btn-dark mt-4" data-bs-toggle="modal" data-bs-target="#modal2">
          Zapisz sie   
         </button>
         
     </div></div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
+    <div className="col-1" >&nbsp;</div>
     </div>
     
-    <div className="row" onMouseEnter={closeModalHandler}>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp; </div>
+    <div className="row" >
+    <div className="col-1" >&nbsp;</div>
+    <div className="col-1" >&nbsp;</div>
+    <div className="col-1" >&nbsp; </div>
     </div>
 
   </div>
@@ -122,7 +122,8 @@ const resetData = async e =>{
     <div className="float-start w-75" >
     <br/>
     <h3>{props.adres}</h3>
-        <h4> {props.data}</h4>
+        <h4> {props.dzien}</h4>
+        <h5> Godzina: {props.start}-{props.end}</h5>
   
     </div>
 
@@ -130,26 +131,26 @@ const resetData = async e =>{
     <div  className="float-end w-25 m-auto text-center">
 
 
-  <div className="row" onMouseEnter={closeModalHandler}>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
+  <div className="row" >
+    <div className="col-1" >&nbsp;</div>
+    <div className="col-1" >&nbsp;</div>
+    <div className="col-1" >&nbsp;</div>
     <div className="row" >
-    <div className="col-1" onMouseEnter={closeModalHandler}></div>
+    <div className="col-1" ></div>
     <div className="col-10">
-    <div className="w-100" onMouseOver={handleData} >
+    <div className="w-100" onMouseOver={() => {handleData();}} >
         <button type="button" className="btn-lg btn btn-dark mt-4" data-bs-toggle="modal" data-bs-target="#modal3">
          Szukaj graczy  
         </button>
         
     </div></div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
+    <div className="col-1">&nbsp;</div>
     </div>
     
-    <div className="row" onMouseEnter={closeModalHandler}>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp;</div>
-    <div className="col-1" onMouseEnter={closeModalHandler}>&nbsp; </div>
+    <div className="row">
+    <div className="col-1">&nbsp;</div>
+    <div className="col-1">&nbsp;</div>
+    <div className="col-1">&nbsp; </div>
     </div>
 
   </div>

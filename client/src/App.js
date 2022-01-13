@@ -8,8 +8,39 @@ import Profile from './pages/Profile';
 import Register from './pages/Register';
 import SearchGame from './pages/SearchGame';
 import SearchPlayers from './pages/SearchPlayers';
+import React, { Component, useEffect, useState } from 'react';
+import Axios from 'axios';
+
 
 function App() {
+    Axios.defaults.withCredentials = true;
+  const [role, setRole] = useState("visitor");
+
+  function checkLoginStatus(){
+
+    Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+      if(response.data.loggedIn === true){
+        console.log(response);  
+        setRole("logged");
+          console.log(response);
+          console.log("info z gory1")
+      }else if(!response.data.loggedIn){
+        console.log(response); 
+          setRole("visitor");
+          console.log("info z gory2");
+          
+      }
+      
+    });
+  }
+ 
+  useEffect(() =>{
+     
+    checkLoginStatus();
+      
+    },[]);
+
+
   return (
   <div>
   <MainNavigation/>

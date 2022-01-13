@@ -3,6 +3,7 @@ import  Axios  from 'axios';
 import React, { useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
+
 function Login(){
 
   const [email, setEmail] = useState('');
@@ -18,10 +19,13 @@ function Login(){
     }).then((response) => {
         if(response.data.message){
           setLoginStatus(response.data.message);
-          
           console.log(response);
       }else{
           console.log(response);
+          localStorage.setItem('role', "logged");
+          //console.log(response.data[0].name);
+          localStorage.setItem('name',response.data[0].name);
+          localStorage.setItem('userId',response.data[0].user_id);
           window.location.reload(false);
           window.location = "/";
       }
@@ -32,6 +36,7 @@ function Login(){
   
     Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
       if (response.data.loggedIn == true) {
+        
       setLoginStatus(response.data.user);
       console.log(response);
       }

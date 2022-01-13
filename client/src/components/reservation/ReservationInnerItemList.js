@@ -1,14 +1,13 @@
 import ReservationInnerItem from "./ReservationInnerItem";
 import Modal from "../ui/Modal";
 function ReservationInnerItemList(props){
-console.log(props.reservationinner);
 return(
     <div className="mb-2">
 
     
     <div> 
     <h5> Poniedziałek</h5> 
-    <div className="d-flex justify-content-between">
+    <div className="d-flex justify-content-between ms-2 me-2">
     {props.reservationinner.map(reservation => {
             if(reservation.day === "Poniedziałek"){
                 return <ReservationInnerItem
@@ -27,7 +26,7 @@ return(
   
     <div>
      <h5> Wtorek</h5>
-     <div className="d-flex justify-content-between">
+     <div className="d-flex justify-content-between ms-2 me-2">
      {props.reservationinner.map(reservation => {
             if(reservation.day === "Wtorek"){
                 return <ReservationInnerItem
@@ -46,7 +45,7 @@ return(
 
      <div>
      <h5> Środa</h5>
-     <div className="d-flex justify-content-between">
+     <div className="d-flex justify-content-between ms-2 me-2">
      {props.reservationinner.map(reservation => {
             if(reservation.day === "Środa"){
                 return <ReservationInnerItem
@@ -65,7 +64,7 @@ return(
 
      <div>
      <h5> Czwartek</h5>
-     <div className="d-flex justify-content-between">
+     <div className="d-flex justify-content-between ms-2 me-2">
      {props.reservationinner.map(reservation => {
             if(reservation.day === "Czwartek"){
                 return <ReservationInnerItem
@@ -84,7 +83,7 @@ return(
 
      <div>
      <h5> Piatek </h5>
-     <div className="d-flex justify-content-between">
+     <div className="d-flex justify-content-between ms-2 me-2">
      {props.reservationinner.map(reservation => {
             if(reservation.day === "Piątek"){
                 return <ReservationInnerItem
@@ -102,7 +101,7 @@ return(
      </div>
      <div>
      <h5> Sobota </h5>
-     <div className="d-flex justify-content-between"> 
+     <div className="d-flex justify-content-between ms-2 me-2"> 
      {props.reservationinner.map(reservation => {
             if(reservation.day === "Sobota"){
                 return <ReservationInnerItem
@@ -120,7 +119,7 @@ return(
      </div>
      <div>
      <h5> Niedziela </h5>
-     <div className="d-flex justify-content-between">
+     <div className="d-flex justify-content-between ms-2 me-2">
      {props.reservationinner.map(reservation => {
             if(reservation.day === "Niedziela"){
                 return <ReservationInnerItem

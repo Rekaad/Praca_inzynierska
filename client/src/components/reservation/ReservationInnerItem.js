@@ -15,7 +15,7 @@ function ReservationInnerItem(props){
             if(response.data.loggedIn === true){
                 //setRole("logged");
                 setUserId(response.data.user[0].user_id);
-                console.log(response);
+                //console.log(response);
             }else{
                // setRole("visitor");
             }
@@ -44,7 +44,7 @@ function ReservationInnerItem(props){
 
     return (
         <div >
-        <button className={props.user_id ? "m-auto p-2 bg-danger border-0 text-light pe-none" : "m-auto p-2 bg-success border-0 text-light " } style={{width:"150px"}} onClick={() => {setModalIsOpen(true)}} onMouseOver= { () =>{setReservationId(props.id)}}>
+        <button className={props.user_id ? "m-auto p-2 bg-danger border-0 text-light pe-none rounded-pill" : "m-auto p-2 bg-success border-0 text-light rounded-pill" } style={{width:"150px"}} onClick={() => {setModalIsOpen(true)}} onMouseOver= { () =>{setReservationId(props.id)}}>
 
             {props.start_hour}-{props.end_hour}
         </button>

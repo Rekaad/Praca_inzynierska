@@ -29,6 +29,9 @@ function MainNavigation () {
     const logout = async() => {
 
         Axios.get("http://localhost:3001/wylogowanie").then((response) => {
+            localStorage.removeItem("role");
+            localStorage.removeItem("name");
+            localStorage.removeItem("userId");
             console.log(response);
             window.location.reload(false);
             window.location = "/";

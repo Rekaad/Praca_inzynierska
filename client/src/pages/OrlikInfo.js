@@ -8,333 +8,49 @@ import Axios from "axios";
 import ReservationInnerItemList from "../components/reservation/ReservationInnerItemList";
 
 
-const DUMMY_DATA = [
-    {
-        reservation_id: '1',
-        orlik_id: '1',
-        day: 'Poniedziałek',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"1",
-    },
-    {
-        reservation_id: '2',
-        orlik_id: '1',
-        day: 'Poniedziałek',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"2",
-    },
-    {
-        reservation_id: '3',
-        orlik_id: '1',
-        day: 'Poniedziałek',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '4',
-        orlik_id: '1',
-        day: 'Poniedziałek',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '5',
-        orlik_id: '1',
-        day: 'Poniedziałek',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-    {
-        reservation_id: '6',
-        orlik_id: '1',
-        day: 'Wtorek',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"",
-    },
-    {
-        reservation_id: '7',
-        orlik_id: '1',
-        day: 'Wtorek',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"6",
-    },
-    {
-        reservation_id: '8',
-        orlik_id: '1',
-        day: 'Wtorek',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '9',
-        orlik_id: '1',
-        day: 'Wtorek',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '10',
-        orlik_id: '1',
-        day: 'Wtorek',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-    {
-        reservation_id: '11',
-        orlik_id: '1',
-        day: 'Środa',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"",
-    },
-    {
-        reservation_id: '12',
-        orlik_id: '1',
-        day: 'Środa',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"",
-    },
-    {
-        reservation_id: '13',
-        orlik_id: '1',
-        day: 'Środa',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '14',
-        orlik_id: '1',
-        day: 'Środa',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '15',
-        orlik_id: '1',
-        day: 'Środa',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-    {
-        reservation_id: '16',
-        orlik_id: '1',
-        day: 'Czwartek',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"",
-    },
-    {
-        reservation_id: '17',
-        orlik_id: '1',
-        day: 'Czwartek',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"",
-    },
-    {
-        reservation_id: '18',
-        orlik_id: '1',
-        day: 'Czwartek',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '19',
-        orlik_id: '1',
-        day: 'Czwartek',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '20',
-        orlik_id: '1',
-        day: 'Czwartek',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-    {
-        reservation_id: '21',
-        orlik_id: '1',
-        day: 'Piątek',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"",
-    },
-    {
-        reservation_id: '22',
-        orlik_id: '1',
-        day: 'Piątek',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"",
-    },
-    {
-        reservation_id: '23',
-        orlik_id: '1',
-        day: 'Piątek',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '24',
-        orlik_id: '1',
-        day: 'Piątek',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '25',
-        orlik_id: '1',
-        day: 'Piątek',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-    {
-        reservation_id: '26',
-        orlik_id: '1',
-        day: 'Sobota',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"",
-    },
-    {
-        reservation_id: '27',
-        orlik_id: '1',
-        day: 'Sobota',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"",
-    },
-    {
-        reservation_id: '28',
-        orlik_id: '1',
-        day: 'Sobota',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '29',
-        orlik_id: '1',
-        day: 'Sobota',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '30',
-        orlik_id: '1',
-        day: 'Sobota',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-    {
-        reservation_id: '31',
-        orlik_id: '1',
-        day: 'Niedziela',
-        start_hour:'16',
-        end_hour: '17',
-        user_id:"",
-    },
-    {
-        reservation_id: '32',
-        orlik_id: '1',
-        day: 'Niedziela',
-        start_hour:'17',
-        end_hour: '18',
-        user_id:"",
-    },
-    {
-        reservation_id: '33',
-        orlik_id: '1',
-        day: 'Niedziela',
-        start_hour:'18',
-        end_hour: '19',
-        user_id:"",
-    },
-    {
-        reservation_id: '34',
-        orlik_id: '1',
-        day: 'Niedziela',
-        start_hour:'19',
-        end_hour: '20',
-        user_id:"",
-    },
-    {
-        reservation_id: '35',
-        orlik_id: '1',
-        day: 'Niedziela',
-        start_hour:'20',
-        end_hour: '21',
-        user_id:"",
-    },
-];
-
 function OrlikInfo(props){
 
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState(localStorage.getItem("role"));
     const [thisId, setThisId] = useState("1");
     const [day, setDay] = useState("Poniedziałek");
     const [thisHour, setThisHour] = useState("0");
     const [thisData, setThisData] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-
+    const [dane, setDane] = useState([]);
     const history = useHistory();
     const location = useLocation();
     const dataId = location.state;
 
     Axios.defaults.withCredentials = true;
     useEffect(() =>{
-        Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
+        const checklogin = async() => { 
+            await Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
             if(response.data.loggedIn === true){
                 setRole("logged");
                 console.log(response);
             }else{
+                
                 setRole("visitor");
             }
             
-          });
-        console.log(dataId);
-        
+          });}
+        //console.log(dataId);
+        const getRezerwacje = () => {
+
+            Axios.get(`http://localhost:3001/rezerwacjeorlik/${dataId.id}`).then((response) => {
+                 console.log(response.data);
+                 setDane(response.data);
+             });
+             
+             }
+
+        checklogin();
+        getRezerwacje();
+        console.log(localStorage);
       },[]);
 
-      Axios.defaults.withCredentials = true;
 
-      const [dane, setDane] = useState([]);
-      
-  
-      useEffect(() => {
-          const getRezerwacje = () => {
-
-              Axios.get(`http://localhost:3001/rezerwacjeorlik/${dataId.id}`).then((response) => {
-              console.log(response.data);
-              setDane(response.data);
-          });
-      
-          }
-          getRezerwacje();
-        }, []);
+    
 
 if(role === "logged"){
 

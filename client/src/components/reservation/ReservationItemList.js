@@ -49,12 +49,13 @@ function ReservationItemList(props){
         <li className="list-group-numbered bg-grey w-75 mx-auto ">
             {props.reservation.map((reservation) => (
                 <ReservationItem 
-                    key={reservation.id} 
-                    id={reservation.id}
-                    imie={reservation.imie}
-                    nazwisko={reservation.nazwisko} 
-                    adres={reservation.adres} 
-                    data={reservation.data}
+                    key={reservation.reservation_id} 
+                    id={reservation.reservation_id}
+                    orlikId = {reservation.orlik_id}
+                    adres={reservation.adress} 
+                    dzien={reservation.day}
+                    start={reservation.start_hour}
+                    end={reservation.end_hour}
                     siteD={props.site}
                 />))}
         </li>

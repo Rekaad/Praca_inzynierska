@@ -19,12 +19,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
     session({
-      key: "userId",
+      key: "user_id",
       secret: "subscribe",
       resave: false,
       saveUninitialized: false,
       cookie: {
-        expires: 60 * 60 * 24,
+        expires: 60 * 60 * 1000,
       },
     })
   );
@@ -96,7 +96,7 @@ app.get("/rezerwacjeorlik/:orlik_id",(req,res)=>{
 //wyswietlanie wszystkich rezerwacji z danym user_id
 app.get("/rezerwacjeuser/:user_id",(req,res)=>{
     const id = req.params.user_id;
-    db.query("SELECT * FROM reservation r inner join orlik o on r.orlik_id=o.orlik_id where r.orlik_id=?;",
+    db.query("SELECT * FROM reservation r inner join orlik o on r.orlik_id=o.orlik_id where r.user_id=?;",
     id, (err,result, fields)=>{
         if(err){
             res.send("Błąd!");

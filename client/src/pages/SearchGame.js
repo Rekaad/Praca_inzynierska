@@ -3,6 +3,7 @@ import ReservationItemList from "../components/reservation/ReservationItemList";
 import Modal from "../components/ui/Modal";
 function SearchGame () {
 
+
   const DUMMY_DATA = [
     {
         id: '1',
@@ -23,10 +24,12 @@ function SearchGame () {
 ];
 
 
+
+
 return <div className="list-group"> 
 <h1 className="text-center">Aktualne rezerwacje</h1> 
 {/*   <PlayerItemList player={DUMMY_DATA}/> */}
-<ReservationItemList site="game" reservation={DUMMY_DATA} />
+<ReservationItemList site="game" />
 {/* <Modal dane={DUMMY_DATA}/> */}
 </div>;
 

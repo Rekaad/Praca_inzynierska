@@ -205,13 +205,13 @@ function Orliki(){
     
 
     useEffect(() => {
-        const getDane = () => {
+        const getDane = async () => {
 
-            Axios.get("http://localhost:3001/orliki").then((response) => {
+           const getdata = await Axios.get("http://localhost:3001/orliki").then((response) => {
             console.log(response.data);
             setDane(response.data);
         });
-    
+        
         }
         getDane();
       }, []);
