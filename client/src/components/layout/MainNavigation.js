@@ -4,7 +4,7 @@ import Axios from "axios";
 
 function MainNavigation () {
 
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState(sessionStorage.getItem("role"));
     const [username, setUsername] = useState("");
 
     Axios.defaults.withCredentials = true;
@@ -12,7 +12,7 @@ function MainNavigation () {
     useEffect(() => {
         Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
             if(response.data.loggedIn === true){
-                setRole("logged");
+                //setRole("logged");
                 setUsername(response.data.user[0].name);
                 console.log(response);
             }else{
@@ -29,9 +29,9 @@ function MainNavigation () {
     const logout = async() => {
 
         Axios.get("http://localhost:3001/wylogowanie").then((response) => {
-            localStorage.removeItem("role");
-            localStorage.removeItem("name");
-            localStorage.removeItem("userId");
+            sessionStorage.removeItem("role");
+            sessionStorage.removeItem("name");
+            sessionStorage.removeItem("userId");
             console.log(response);
             window.location.reload(false);
             window.location = "/";

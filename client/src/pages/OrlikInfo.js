@@ -10,7 +10,7 @@ import ReservationInnerItemList from "../components/reservation/ReservationInner
 
 function OrlikInfo(props){
 
-    const [role, setRole] = useState(localStorage.getItem("role"));
+    const [role, setRole] = useState(sessionStorage.getItem("role"));
     const [thisId, setThisId] = useState("1");
     const [day, setDay] = useState("Poniedziałek");
     const [thisHour, setThisHour] = useState("0");
@@ -26,7 +26,7 @@ function OrlikInfo(props){
         const checklogin = async() => { 
             await Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
             if(response.data.loggedIn === true){
-                setRole("logged");
+                //setRole("logged");
                 console.log(response);
             }else{
                 
@@ -67,19 +67,14 @@ if(role === "logged"){
     <h1>{dataId.adress}</h1>
     </div>
       <div className="d-flex">
-      <div className="border border-3 float-start w-25">
+      <div className="border border-3 float-start w-50 me-2">
       <h3> Kontakt</h3>
-      <h5>Nr telefonu: <br/> {dataId.number}</h5>
-      <h5>E-mail: <br/> {dataId.email}</h5>
+      <h5>Nr telefonu: {dataId.number}</h5>
+      <h5>E-mail: {dataId.email}</h5>
       </div>
+
     
-      <div className="border border-3 m-auto w-25">
-      <h3> Godziny otwarcia</h3>
-      <h5>Pon-Sob: </h5>
-      <h5>Nd: </h5>
-      </div>
-    
-      <div className="d-flex border border-3 float-end w-25">
+      <div className="d-flex border border-3 float-end w-50 ms-2">
       <button className="m-auto w-100 h-100 bg-white border-0" onClick={() => {setModalIsOpen(true)}}> <h3> Regulamin</h3></button>
     
       <Modal isOpen={modalIsOpen} style={

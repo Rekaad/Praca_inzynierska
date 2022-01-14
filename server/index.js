@@ -24,7 +24,7 @@ app.use(
       resave: false,
       saveUninitialized: false,
       cookie: {
-        expires: 60 * 60 * 1000,
+        expires: 60 * 60 * 24 * 1000,
       },
     })
   );
@@ -110,9 +110,7 @@ app.get("/rezerwacjeuser/:user_id",(req,res)=>{
 app.put("/rezerwacja/:reservation_id/:user_id", (req,res)=>{
     const resid = req.params.reservation_id;
     const id = req.params.user_id;
-    console.log("stop1");
-    console.log(req.params.user_id);
-    console.log("stop2");
+
     db.query("update reservation set user_id=? where user_id is null and reservation_id=?",
     [id,resid],(err,result)=>{
         console.log(result)
@@ -121,21 +119,37 @@ app.put("/rezerwacja/:reservation_id/:user_id", (req,res)=>{
             console.log(err);
         }
         res.send(result)
-        console.log(resid);
-        console.log(id);
     })
 })
 
-//utworzenie meczu
-app.post("/mecze/:reservation_id",(req,res)=>{
+//utworzenie meczu poprzednie, zostawione na wszelki
+// app.post("/mecze/:reservation_id",(req,res)=>{
+//     const id = req.params.reservation_id;
+//     db.query(`
+//         insert into game
+//         values (default,1,current_date(),?)
+//     `,id,(err,result)=>{
+//         if(err){
+//             res.send("Błąd!")
+//             console.log(err)
+//         }
+//         res.send(result);
+//     })
+// })
+
+
+
+//tworzenie meczu
+app.post("/mecze/:reservation_id/:players/:tournament",(req,res)=>{
     const id = req.params.reservation_id;
+    const players = req.params.players;
+    const tournament = req.params.tournament;
     db.query(`
         insert into game
-        values (default,1,current_date(),?)
-    `,id,(err,result)=>{
+        values (default,12-?,current_date(),?,?);       
+    `,[players,tournament,id],(err,result)=>{
         if(err){
             res.send("Błąd!")
-            console.log(err)
         }
         res.send(result);
     })
@@ -144,8 +158,8 @@ app.post("/mecze/:reservation_id",(req,res)=>{
 //wyswietlenie wszystkich meczy
 app.get("/mecze",(req,res)=>{
     db.query(`
-    SELECT u.name,u.surname,o.adress,o.school,o.phone,o.email,o.en_terms,o.pl_terms,
-           r.day,r.start_hour,r.end_hour
+    SELECT g.game_id, r.reservation_id, g.players, u.name,u.surname,o.adress,o.school,o.phone,o.email,
+            o.en_terms,o.pl_terms,r.day,r.start_hour,r.end_hour
     FROM game g 
     inner join reservation r on g.reservation_id=r.reservation_id
     inner join user u on u.user_id=r.user_id
@@ -160,7 +174,7 @@ app.get("/mecze",(req,res)=>{
 });
 
 //zapisanie sie na gre
-app.put("/zapisanienagre/:user_id/:game_id/", (req,res)=>{
+app.put("/zapisanienagre/:user_id/:game_id", (req,res)=>{
     const userid = req.params.user_id;
     const gameid = req.params.game_id;
 
@@ -202,27 +216,84 @@ app.delete("/wypisaniezgry/:user_id/:game_id", (req,res)=>{
 
 //wyswietlenie wszystkich uzytkownikow ze wszystkimi rezerwacjami
 app.get("/uzytkownicy",(req,res)=>{
-    db.query("SELECT * FROM user u inner join reservation r on u.user_id=r.user_id;", 
+    db.query(`SELECT u.user_id,u.email,u.name,u.surname,u.phone
+    FROM user u;`, 
     (err,result, fields)=>{
         if(err){
             res.send("Błąd!")
         }
-        res.send(result);
+        res.send(result[0]);
     })
 });
 
 //wyswietlenie konkretnego uzytkownika ze wszystkimi jego rezerwacjami
-app.get("/uzytkownicy/:user_id",(req,res)=>{
-    const id = req.params.user_id;
-    db.query("SELECT * FROM user u inner join reservation r on u.user_id=r.user_id where r.user_id=?;",
-    id, (err,result, fields)=>{
-        if(err){
-            res.send("Błąd!");
-            console.log(err);
+// app.get("/uzytkownicy/:user_id",(req,res)=>{
+//     const id = req.params.user_id;
+//     db.query(`SELECT u.user_id,u.email,u.name,u.surname,u.phone,r.reservation_id
+//     ,r.orlik_id,r.day,r.start_hour,r.end_hour
+//             FROM user u left join reservation r on u.user_id=r.user_id 
+//             where u.user_id=?;`,
+//     id, (err,result, fields)=>{
+//         if(err){
+//             res.send("Błąd!");
+//             console.log(err);
+//         }
+//         res.send(result);
+//     })
+// });
+
+
+//wyswietlanie konkretnego uzytkownika wraz z jego rezerwacjami - poprawione
+const getUserData = async (id) => {
+    const myQuery = `SELECT u.email,u.name,u.surname,u.phone 
+                    FROM user u where user_id=?;`;
+  
+    // getting the result of the query
+    let results = await new Promise((resolve, reject) =>
+      db.query(myQuery, id, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
         }
-        res.send(result);
-    })
-});
+      })
+    );
+  
+    // return resolved promise
+    return results;
+  };
+  const getUserReservations = async (id) => {
+    const myQuery =
+      `SELECT r.reservation_id, r.day,r.start_hour,r.end_hour,o.adress,o.school
+      FROM user u left join reservation r on u.user_id=r.user_id
+      inner join orlik o on o.orlik_id=r.orlik_id 
+      where r.user_id=?;`;
+  
+    // getting the result of the query
+    let results = await new Promise((resolve, reject) =>
+      db.query(myQuery, id, (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      })
+    );
+  
+    // return resolved promise
+    return { reservation: results };
+  };
+  
+  //wyswietlenie konkretnego uzytkownika ze wszystkimi jego rezerwacjami
+  app.get("/uzytkownicy/:user_id", async (req, res) => {
+    const id = req.params.user_id;
+    const result = await getUserData(id);
+    const result2 = await getUserReservations(id);
+    if(result[0]=== undefined){res.send("Error")}
+    else
+   { res.send({ user: result[0], ...result2 });}
+  });
+
 
 //rejestracja użytkownika
 
@@ -233,6 +304,7 @@ app.post("/rejestracja", (req,res)=>{
     const surname = req.body.surname;
     const phone = req.body.phone;
     console.log(req.body)
+    
     bcrypt.hash(password, saltRounds, (err, hash) => {
         console.log(hash);
        if (err) {
@@ -248,7 +320,7 @@ app.post("/rejestracja", (req,res)=>{
         res.send(result);
     }
    )
-})
+}) 
 })
 //logowanie
 app.post('/login', (req,res)=>{

@@ -22,10 +22,10 @@ function Login(){
           console.log(response);
       }else{
           console.log(response);
-          localStorage.setItem('role', "logged");
+          sessionStorage.setItem('role', "logged");
           //console.log(response.data[0].name);
-          localStorage.setItem('name',response.data[0].name);
-          localStorage.setItem('userId',response.data[0].user_id);
+          sessionStorage.setItem('name',response.data[0].name);
+          sessionStorage.setItem('userId',response.data[0].user_id);
           window.location.reload(false);
           window.location = "/";
       }

@@ -21,17 +21,22 @@ function ReservationItemList(props){
             {props.reservation.filter((val)=> {
                 if(searchTerm===""){
                     return val;
-                }else if(val.nazwisko.toLowerCase().includes(searchTerm.toLowerCase()) || val.imie.toLowerCase().includes(searchTerm.toLowerCase()) || val.adres.toLowerCase().includes(searchTerm.toLowerCase())){
+                }else if(val.adress.toLowerCase().includes(searchTerm.toLowerCase()) || val.day.toLowerCase().includes(searchTerm.toLowerCase()) || val.day.toLowerCase().includes(searchTerm.toLowerCase())){
                     return val;
                 }
             }).map((reservation) => (
                 <ReservationItem 
-                    key={reservation.id} 
-                    id={reservation.id}
-                    imie={reservation.imie}
-                    nazwisko={reservation.nazwisko} 
-                    adres={reservation.adres} 
-                    data={reservation.data}
+                    key={reservation.reservation_id} 
+                    id={reservation.reservation_id}
+                    orlikId = {reservation.orlik_id}
+                    adres={reservation.adress} 
+                    school = {reservation.school}
+                    game_id = {reservation.game_id}
+                    dzien={reservation.day}
+                    name = {reservation.name}
+                    surname = {reservation.surname}
+                    start={reservation.start_hour}
+                    end={reservation.end_hour}
                     siteD={props.site}
                 />))}
         </li>

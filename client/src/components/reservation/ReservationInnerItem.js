@@ -85,7 +85,7 @@ function ReservationInnerItem(props){
       </div>
     
     <div className="modal-body m-auto mt-5" style={{height:"250px"}}>
-              <h5> Czy chcesz dokonać rezerwacji na godzinę {reservationId} aa {props.start_hour}?</h5>
+              <h5> Czy chcesz dokonać rezerwacji na godzinę {props.start_hour}?</h5>
  
     
     </div>   

@@ -6,9 +6,9 @@ import Axios from "axios";
 function SearchPlayers() {
 
 
-    const [role, setRole] = useState(localStorage.getItem("role"));
+    const [role, setRole] = useState(sessionStorage.getItem("role"));
     const [dane, setDane] = useState([]);
-    const userId = useState(localStorage.getItem("userId"));
+    const userId = useState(sessionStorage.getItem("userId"));
     const DUMMY_DATA = [
         {
             id: '1',
@@ -26,7 +26,7 @@ function SearchPlayers() {
         const checklogin = async() => { 
             await Axios.get("http://localhost:3001/zalogowanie").then((response) => { 
             if(response.data.loggedIn === true){
-                setRole("logged");
+                //setRole("logged");
                 console.log(response.data.user[0].user_id);
                 console.log(response);
             }else{

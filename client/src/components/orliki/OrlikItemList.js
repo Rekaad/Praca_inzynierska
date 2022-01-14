@@ -23,7 +23,7 @@ return(
             id={orlik.orlik_id}
             school={orlik.school} 
             adress={orlik.adress} 
-            number={orlik.number}
+            number={orlik.phone}
             email={orlik.email}
             en_terms={orlik.en_terms}
             pl_terms={orlik.pl_terms}

@@ -115,7 +115,7 @@ return (
         <button type="button" onClick={cancelHandler} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body text-center">
-        Wpisz ilu graczy szukasz <br/>
+        Wpisz ilu graczy szukasz {props.dane} <br/>
         <input type="text"/><br/>
 
       </div>
