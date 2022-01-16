@@ -29,9 +29,12 @@ function ReservationItemList(props){
                     key={reservation.reservation_id} 
                     id={reservation.reservation_id}
                     orlikId = {reservation.orlik_id}
+                    user_id = {reservation.user_id}
                     adres={reservation.adress} 
                     school = {reservation.school}
                     game_id = {reservation.game_id}
+                    players = {reservation.players}
+                    playersList = {reservation.playersList}
                     dzien={reservation.day}
                     name = {reservation.name}
                     surname = {reservation.surname}
@@ -58,6 +61,7 @@ function ReservationItemList(props){
                     id={reservation.reservation_id}
                     orlikId = {reservation.orlik_id}
                     adres={reservation.adress} 
+                    playersList = {[0]}
                     dzien={reservation.day}
                     start={reservation.start_hour}
                     end={reservation.end_hour}
@@ -67,6 +71,32 @@ function ReservationItemList(props){
         
         </div>
         );
+    }
+    else if(site==="profile"){
+
+        
+        return(
+
+      
+            <div>
+        <li className="list-group-numbered bg-grey w-100 mx-auto ">
+            {props.game.map((game,index) => (
+                <ReservationItem 
+                    key={game.game_id} 
+                    id={game.game_id}
+                    adres= {props.reservation[index].adress}
+                    dzien={props.reservation[index].day}
+                    start={props.reservation[index].start_hour}
+                    end={props.reservation[index].end_hour}
+                    players = {game.players}
+                    playersList = {[0]}
+                    siteD={props.site}
+                />))}
+        </li>
+        
+        </div>
+        );
+
     }
 
 

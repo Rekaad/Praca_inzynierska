@@ -62,7 +62,7 @@ function MainNavigation () {
       </li>
       <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
         <li><Link className="dropdown-item" to="/profil">Profil</Link></li>
-        <li><Link className="dropdown-item" to="/friends">Znajomi</Link></li>
+        <li><Link className="dropdown-item" to="/uzytkownicy">Lista użytkowników</Link></li>
         <li><button className="dropdown-item" onClick={logout}>Wyloguj</button></li>
       </ul>
     </li>

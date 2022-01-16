@@ -8,29 +8,46 @@ function Login(){
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessEmail, setErrorMessEmail] = useState("Zły email");
+  const [errorMessPass, setErrorMessPass] = useState("Hasło powinno zawierać przynajmniej 8 znaków");
+  const [errorEmail, setErrorEmail] = useState(false);
+  const [errorPass, setErrorPass] = useState(false);
+
 
   const [loginStatus, setLoginStatus] = useState('');
+  const [loginStatuslogic, setLoginStatusLogic] = useState(false)
   
   Axios.defaults.withCredentials = true;
   const logins = () => {
-    Axios.post("http://localhost:3001/login",{
-      email: email,
-      password: password,
-    }).then((response) => {
-        if(response.data.message){
-          setLoginStatus(response.data.message);
-          console.log(response);
-      }else{
-          console.log(response);
-          sessionStorage.setItem('role', "logged");
-          //console.log(response.data[0].name);
-          sessionStorage.setItem('name',response.data[0].name);
-          sessionStorage.setItem('userId',response.data[0].user_id);
-          window.location.reload(false);
-          window.location = "/";
-      }
-    });
+    if((errorEmail && errorPass) === false){
+      Axios.post("http://localhost:3001/login",{
+        email: email,
+        password: password,
+      }).then((response) => {
+          if(response.data.message){
+            setLoginStatusLogic(true);
+            setLoginStatus(response.data.message);
+            console.log(response);
+        }else{
+            console.log(response);
+            sessionStorage.setItem('role', "logged");
+            //console.log(response.data[0].name);
+            sessionStorage.setItem('name',response.data[0].name);
+            sessionStorage.setItem('userId',response.data[0].user_id);
+            window.location.reload(false);
+            window.location = "/";
+        }
+      });
+    }else console.log("nieudalosie");   
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(email);
+    console.log(password);
+    logins();
+    
+  }
 
   useEffect(() => {
   
@@ -57,25 +74,44 @@ function Login(){
 
               <h2 className="fw-bold mb-3 text-uppercase">Logowanie</h2>
 
-
+              <form onSubmit={handleSubmit}>
               <div className="form-outline mb-4">
-                <input type="email" id="typeEmailX" className="form-control form-control-lg" onChange={(e) =>{
+                <input type="email" id="typeEmailX" required className="form-control form-control-lg" onChange={(e) =>{
+                  if(e.target.value.match("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")!=null){
+                    setErrorEmail(false);
                     setEmail(e.target.value);
+                  }else{
+                    setErrorEmail(true);
+                    setEmail(e.target.value);
+                  } 
+                    
                  }} />
+                  
                 <label className="form-label" for="typeEmailX" >Email</label>
+                <p className={errorEmail ? ' text-danger' :'d-none text-danger' }>{errorMessEmail}</p>
               </div>
 
               <div className="form-outline mb-4">
-                <input type="password" id="typePasswordX" className="form-control form-control-lg" onChange={(e) =>{
+                <input type="password" id="typePasswordX" required className="form-control form-control-lg" onChange={(e) =>{
+                    if(e.target.value.match("^(?=.*?[a-z]).{8,}$")!=null){
+                    setErrorPass(false);
                     setPassword(e.target.value);
+                  }else{
+                    setErrorPass(false);
+                    setPassword(e.target.value);
+                  } 
+                   
                  }} />
+                
                 <label className="form-label" for="typePasswordX">Hasło</label>
+                <p className={errorPass ? ' text-danger' :'d-none text-danger' }>{errorMessPass}</p>
               </div>
+                
+            
 
-              <p className="small mb-3 pb-lg-2"><a className="" href="#!">Zapomniałeś hasła?</a></p>
-
-              <button className="btn btn-outline-dark btn-lg px-5" onClick={logins}>Login</button>
-
+              <button className="btn btn-outline-dark btn-lg px-5 mb-4">Login</button>
+              <p className={loginStatuslogic ? ' text-danger' :'d-none text-danger' }>{loginStatus}</p>
+            </form>
             </div>
 
             <div>

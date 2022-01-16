@@ -5,15 +5,18 @@ import Axios from "axios";
 function SearchGame () {
     const [dane, setDane] = useState([]);
     const userId = useState(sessionStorage.getItem("userId"));
+    const [isLoading, setIsLoading] = useState(true);
 
     Axios.defaults.withCredentials = true;
     useEffect(() =>{
+        setIsLoading(true);
         //console.log(dataId);
         const getMecze = () => {
 
             Axios.get("http://localhost:3001/mecze").then((response) => {
                  console.log(response.data);
                  setDane(response.data);
+                 setIsLoading(false);
              });
              
              }
@@ -21,34 +24,27 @@ function SearchGame () {
         getMecze();
       },[]);
 
-  const DUMMY_DATA = [
-    {
-        id: '1',
-        imie: 'Artur',
-        nazwisko: 'Góra',
-        adres:'Wajdeloty 1',
-        data:"19-09-2022",
-        
-    },
-    {
-        id: '2',
-        imie: 'Darek',
-        nazwisko: 'Pieczarek',
-        adres:'Wajdeloty 3',
-        data:"21-09-2022",
-        
-    },
-];
+
+if(isLoading){
+    return( <section>
+        <p>
+            Ładowanie
+        </p>
+    </section>);
+   
+}
+else{
+    return (<div className="list-group"> 
+    <h1 className="text-center">Aktualne rezerwacje</h1> 
+    {/*   <PlayerItemList player={DUMMY_DATA}/> */}
+    <ReservationItemList site="game" reservation={dane}/>
+    
+
+    {/* <Modal dane={DUMMY_DATA}/> */}
+    </div>);
+}
 
 
-
-
-return <div className="list-group"> 
-<h1 className="text-center">Aktualne rezerwacje</h1> 
-{/*   <PlayerItemList player={DUMMY_DATA}/> */}
-<ReservationItemList site="game" reservation={dane}/>
-{/* <Modal dane={DUMMY_DATA}/> */}
-</div>;
 
 }
 

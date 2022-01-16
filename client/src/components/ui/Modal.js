@@ -53,7 +53,7 @@ if(nowehaslo === nowehaslo2){
   console.log("test");
 }
 
-}
+};
 
 function cancelHandler(){
 props.onCancel();

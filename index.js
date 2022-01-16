@@ -33,6 +33,8 @@ app.use(
   
 const bcrypt = require("bcrypt");
 const { query } = require('express');
+//const { hash } = require('bcryptjs');
+//const { hash } = require('bcryptjs');
 const saltRounds = 10;
 
 const db = mysql.createConnection({
@@ -45,7 +47,7 @@ multipleStatements: true
 
 //wyswietlenie wszystkich aktualnosci
  app.get('/aktualnosci', (req, res) =>{
-     db.query('select * from news order by news_id desc limit 2', (err, result, fields) => {
+     db.query('select * from news', (err, result, fields) => {
          if (err){
              res.send("Błąd!");
          }   
@@ -94,14 +96,7 @@ app.get("/rezerwacjeorlik/:orlik_id",(req,res)=>{
 //wyswietlanie wszystkich rezerwacji z danym user_id
 app.get("/rezerwacjeuser/:user_id",(req,res)=>{
     const id = req.params.user_id;
-    db.query(`
-    SELECT r.reservation_id, r.day,r.start_hour,r.end_hour,r.user_id,r.orlik_id,o.adress,o.school
-		,o.phone,o.email,o.en_terms,o.pl_terms
-    FROM reservation r 
-    inner join orlik o on r.orlik_id=o.orlik_id 
-    left join game g on g.reservation_id=r.reservation_id
-    where r.user_id=? and g.game_id is null;
-    `,
+    db.query("SELECT * FROM reservation r inner join orlik o on r.orlik_id=o.orlik_id where r.user_id=?;",
     id, (err,result, fields)=>{
         if(err){
             res.send("Błąd!");
@@ -127,6 +122,20 @@ app.put("/rezerwacja/:reservation_id/:user_id", (req,res)=>{
     })
 })
 
+//utworzenie meczu poprzednie, zostawione na wszelki
+// app.post("/mecze/:reservation_id",(req,res)=>{
+//     const id = req.params.reservation_id;
+//     db.query(`
+//         insert into game
+//         values (default,1,current_date(),?)
+//     `,id,(err,result)=>{
+//         if(err){
+//             res.send("Błąd!")
+//             console.log(err)
+//         }
+//         res.send(result);
+//     })
+// })
 
 
 
@@ -149,8 +158,8 @@ app.post("/mecze/:reservation_id/:players/:tournament",(req,res)=>{
 //wyswietlanie wszystkich gier
 const getGamesData = async () => {
   //uzupełnij SQL bo ja nie umiem
-      const myQuery = `SELECT g.game_id,g.reservation_id,g.players,g.tournament,u.user_id,
-      u.name,u.surname,o.adress,o.school,o.phone,o.email,o.en_terms,o.pl_terms,r.day,
+      const myQuery = `SELECT g.game_id,g.reservation_id,g.players,g.date, u.user_id,
+      u.name,u.surname,o.adress,o.school,r.day,
       r.start_hour,r.end_hour
       FROM user u left join reservation r on u.user_id=r.user_id
       inner join orlik o on o.orlik_id=r.orlik_id 
@@ -196,9 +205,17 @@ const getGamesData = async () => {
     };
     
     //wyswietlenie konkretnego uzytkownika ze wszystkimi jego rezerwacjami
-app.get("/mecze", async (req, res) => {
+    app.get("/mecze", async (req, res) => {
       const result = await getGamesData();
+//   result.map( async (res, index)=> {
+//       console.log(res.game_id)
+//     const players= await getGamesPlayers(res.game_id)
+//     console.log("plajers", players)
+//     result[index] = {...result[index], ...players}
 
+//   console.log('res',result[index].players);
+
+//     })
 
 for (let [index, item] of result.entries()) {
   const players= await getGamesPlayers(item.game_id)
@@ -268,6 +285,22 @@ app.get("/uzytkownicy",(req,res)=>{
     })
 });
 
+//wyswietlenie konkretnego uzytkownika ze wszystkimi jego rezerwacjami
+// app.get("/uzytkownicy/:user_id",(req,res)=>{
+//     const id = req.params.user_id;
+//     db.query(`SELECT u.user_id,u.email,u.name,u.surname,u.phone,r.reservation_id
+//     ,r.orlik_id,r.day,r.start_hour,r.end_hour
+//             FROM user u left join reservation r on u.user_id=r.user_id 
+//             where u.user_id=?;`,
+//     id, (err,result, fields)=>{
+//         if(err){
+//             res.send("Błąd!");
+//             console.log(err);
+//         }
+//         res.send(result);
+//     })
+// });
+
 
 //wyswietlanie konkretnego uzytkownika wraz z jego rezerwacjami - poprawione
 const getUserData = async (id) => {
@@ -333,7 +366,27 @@ const getUserData = async (id) => {
     return { game: results };
   };
 
- 
+  // const getUsersOfTheGame = async (id) => {
+  //   const myQuery =
+  //     `select p.user_id
+  //     from game g 
+  //     inner join players p on p.game_id=g.game_id
+  //     where p.game_id=?`;
+  
+  //   // getting the result of the query
+  //   let results = await new Promise((resolve, reject) =>
+  //     db.query(myQuery, id, (err, results) => {
+  //       if (err) {
+  //         reject(err);
+  //       } else {
+  //         resolve(results);
+  //       }
+  //     })
+  //   );
+  
+  //   // return resolved promise
+  //   return { gameplayers: results };
+  // };
   
   //wyswietlenie konkretnego uzytkownika ze wszystkimi jego rezerwacjami
   app.get("/uzytkownicy/:user_id", async (req, res) => {
@@ -341,7 +394,7 @@ const getUserData = async (id) => {
     const result = await getUserData(id);
     const result2 = await getUserReservations(id);
     const result3 = await getUserGames(id);
-
+    //const result4 = await getUsersOfTheGame(id);
     
     if(result[0]=== undefined){res.send("Error")}
     else
@@ -413,7 +466,42 @@ app.post('/login', (req,res)=>{
         });
 
 
+//zmiana hasła - stare
+            
+            
+// app.post('/zmianahasla', (req,res)=>{
    
+//     const email = req.body.email;
+//     const password = req.body.password;
+
+//     console.log(req.body)
+//      bcrypt.hash(password, saltRounds, (err, hash) => {
+//         console.log(hash);
+//       if (err) {
+//         console.log(err);
+//       }
+//      bcrypt.compare(password, hash, (error, response) => {
+//          if(response){
+//      db.query(
+//       "UPDATE user SET password =? WHERE email =?",[hash,email],
+//          (err,result)=> {
+//           if(err)
+//           {res.send(result);
+              
+//           }else{
+//             res.send({ message: "Hasło zostało zapisane!" });
+//             console.log(result);
+//           }
+//    }
+//    )}
+//         else{
+//             res.send({message:"Wprowadzone hasło jest niepoprawne"})
+//         }
+//    ;}
+//   );
+// })
+// });        
+
 
 //poprawiona zmiana hasła
 app.put('/zmianahasla/:user_id', (req,res)=>{
@@ -486,24 +574,8 @@ app.get("/wylogowanie",(req,res)=>{
     req.session.destroy();
 });
 
-//sprawdzenie czy istnieje mecz o podanym reservation_id
-app.get("/czyistnieje/:reservation_id",(req,res)=>{
-  const id = req.params.reservation_id;
-  db.query(`SELECT *
-  FROM game
-  where reservation_id=?;`,id, 
-  (err,result,row,fields)=>{
-      if(err){
-          res.send("Błąd!")
-      }
-      console.log(result[0])
-      if(result[0]===undefined){
-        res.send(false)
-      } else {
-        res.send(true)
-      }
-  })
-});
+
+
 
   
 
@@ -513,3 +585,41 @@ app.listen(3001,() => {
 
 
 
+
+// //zmiana hasła
+            
+            
+// app.post('/zmianahasla', (req,res)=>{
+   
+//     const email = req.body.email;
+//     const password = req.body.password;
+
+//     console.log(req.body)
+//      bcrypt.hash(password, saltRounds, (err, hash) => {
+//         console.log(hash);
+//       if (err) {
+//         console.log(err);
+//       }
+//       bcrypt.compare(password, result[0].password, (error, response) => {
+//      db.query(
+//       "UPDATE user SET password =? WHERE email =?",[hash,email],
+//          (err,result)=> {
+//           if(err)
+//           {res.send(result);
+              
+//           }else{
+//             res.send({ message: "Hasło zostało zapisane!" });
+//             console.log(result);
+//           }
+//    }
+//    );
+//   });
+// });    
+
+
+
+
+//select p.user_id,p.game_id
+// from game g 
+// inner join players p on p.game_id=g.game_id
+// where g.game_id in (select g.game_id from reservation r inner join game g on r.reservation_id=g.reservation_id)

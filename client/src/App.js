@@ -10,6 +10,7 @@ import SearchGame from './pages/SearchGame';
 import SearchPlayers from './pages/SearchPlayers';
 import React, { Component, useEffect, useState } from 'react';
 import Axios from 'axios';
+import Players from './pages/Players';
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
     <Route path='/orliki'> <Orliki /> </Route>
     <Route path='/gry'> <SearchGame /> </Route>
     <Route path='/gracze'> <SearchPlayers /> </Route>
+    <Route path='/uzytkownicy'><Players/> </Route>
     <Route path='/login'> <Login/></Route>
     <Route path='/rejestracja'> <Register/> </Route>
     <Route path='/profil'> <Profile /> </Route>

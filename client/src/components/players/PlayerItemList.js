@@ -10,21 +10,21 @@ function PlayerItemList(props){
     <div className="d-block text-center mb-3">
     <input type="text" placeholder="Search..." onChange={event =>{setSearchTerm(event.target.value)}}/>
     </div>
-    <li className="list-group-numbered bg-grey w-75 mx-auto ">
+    <li className="list-group-numbered bg-grey w-100 mx-auto ">
         {props.player.filter((val)=> {
             if(searchTerm===""){
                 return val;
-            }else if(val.nazwisko.toLowerCase().includes(searchTerm.toLowerCase()) || val.imie.toLowerCase().includes(searchTerm.toLowerCase())){
+            }else if(val.surname.toLowerCase().includes(searchTerm.toLowerCase()) || val.name.toLowerCase().includes(searchTerm.toLowerCase())){
                 return val;
             }
         }).map((player) => (
             <PlayerItem 
-                key={player.id} 
-                id={player.id}
-                imie={player.imie}
-                nazwisko={player.nazwisko} 
-                wiek={player.wiek} 
-                zdjecie={player.zdjecie}
+                key={player.user_id} 
+                id={player.user_id}
+                imie={player.name}
+                nazwisko={player.surname}
+                telefon = {player.phone}
+                
             />))}
     </li>
     </div>
